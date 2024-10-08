@@ -4,8 +4,8 @@ from django.http import HttpResponseRedirect
 from django.template import loader
 from django import forms
 from .forms import UploadFileForm, filterToSelect
-from .models import Image
-from PIL import Image as PILImage, ImageOps, ImageFilter
+from .models import ImageTable
+from PIL import Image, ImageOps, ImageFilter
 from django.conf import settings
 import os
 
@@ -44,12 +44,12 @@ def selectFilter(request, image_id):
             applyFilter(image_id, selectedFilter)
             
             #get image object
-            imageObject = Image.objects.get(id = image_id)
+            imageObject = ImageTable.objects.get(id = image_id)
 
             return render(request, 'imageProcessor/successPage.html', {'image': imageObject, 'choice': selectedFilter})
     else:
         #defaults to here until user hits submit
-        imageObject = Image.objects.get(id = image_id)
+        imageObject = ImageTable.objects.get(id = image_id)
         form = filterToSelect()
         
         return render(request, 'imageProcessor/filterSelect.html', {'form': form, 'image': imageObject})
@@ -57,29 +57,63 @@ def selectFilter(request, image_id):
 
 def applyFilter(image_id, choice):
 
-    
+    #print(Image.__version__)
 
     #gets image that was uploaded
-    imageObject = Image.objects.get(id = image_id)
+    imageObject = ImageTable.objects.get(id = image_id)
     
     #gets image from object for copying
-    img = imageObject.uploadedImage
+    #img = imageObject.uploadedImage
 
 
     #tokenizes image path so that choice is added to image name
     splitPath = os.path.basename(imageObject.uploadedImage.name).split('.')
     newBaseName = splitPath[0]+'-'+choice+'.'+splitPath[1]
 
-    #creates and absolute path based on media_root for new image
+    #creates an absolute path based on media_root for new image
     newImagePath = os.path.join(settings.MEDIA_ROOT, 'processedImage/', newBaseName)
-
-    #copies original image into new file
-    with open(newImagePath, 'wb+') as destination:
-        for chunk in img.chunks():
-            destination.write(chunk)
-
-    #need to apply filters to newly created image here
     
+    #open image again
+    print("Image to open" + imageObject.uploadedImage.path)
+    imgToFilter = Image.open(imageObject.uploadedImage.path)
+
+    #debug
+    print("Original Image Format:", imgToFilter.format)
+    print("Original Image Size:", imgToFilter.size)
+    
+    #preserves the format
+    original_format = imgToFilter.format
+
+
+    if(choice == 'blur'):
+        print(choice)
+        imgToFilter = imgToFilter.filter(ImageFilter.GaussianBlur)
+        
+
+        
+        
+        
+    elif(choice == 'gray'):
+        print('gray')
+        imgToFilter = ImageOps.grayscale(imgToFilter)
+    elif(choice =='edge'):
+        print('edge')
+    elif(choice == 'poster'):
+        print('poster')
+    elif(choice == 'sepia'):
+        print('sepia')
+    elif(choice == 'solar'):
+        print('solar')
+
+    #debug
+    print("After Image Format:", imgToFilter.format)
+    print("After Image Size:", imgToFilter.size)
+    
+    #image filtering is not actually happening
+
+
+    print(newImagePath)
+    imgToFilter.save(newImagePath, format=original_format)
     
     
     #updates the imageObject filtered image field with relative path

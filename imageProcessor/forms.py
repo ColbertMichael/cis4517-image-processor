@@ -1,11 +1,11 @@
 from django import forms
-from .models import Image
+from .models import ImageTable
 
 class UploadFileForm(forms.ModelForm):
 
     #creates a file input
     class Meta:
-        model = Image
+        model = ImageTable
         fields = ['uploadedImage']
 
 
