@@ -1,0 +1,16 @@
+<html>
+    <head>
+        <title>Filter Sucess!</title>
+    </head>
+
+    <body>
+
+        <img src = "{{ image.uploadedImage.url }}" alt = "Your image Upload" width="20%">
+
+        <p>You selected {{choice}} ... congrats!</p>
+        <p>Here is your filtered image</p>
+        <img src = "{{ image.filteredImage.url }}" alt = "Your image Upload" width="20%">
+        <br>
+        <a href = "{{image.filteredImage.url }}" download>Click here to download filterred Image</a>
+    </body>
+</html>

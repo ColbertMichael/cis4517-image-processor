@@ -1,0 +1,31 @@
+<html>
+    <head><title>Select the filter</title>
+    
+    
+    </head>
+
+    <body>
+
+
+        <p>Your uploaded image:
+        </p>
+            <img src = "{{ image.uploadedImage.url }}"  width = "20%">
+        
+
+        <form method= "POST">
+            {% csrf_token %}
+            {{ form.as_p}}
+<!--
+            <input type="radio" id="gray" name="filter" value="Gray">Gray
+            <input type="radio" id="solar" name="filter" value="Solar">Solar
+            <input type="radio" id="edge" name="filter" value="Edge">Edge
+            <input type="radio" id="poster" name="filter" value="Poster">Poster
+            <input type="radio" id="sepia" name="filter" value="Sepia">Sepia
+            <input type="radio" id="blur" name="filter" value="Blur">Blur
+        -->
+            <button type= "Submit">Apply filter</button>
+
+        </form>
+
+    </body>
+</html>
