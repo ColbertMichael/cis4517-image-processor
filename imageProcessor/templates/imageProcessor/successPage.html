@@ -5,6 +5,9 @@
 
     <body>
 
+        <a href = "{% url 'index' %}">Click Here to process another photo!</a>
+        <br>
+
         <img src = "{{ image.uploadedImage.url }}" alt = "Your image Upload" width="20%">
 
         <p>You selected {{choice}} ... congrats!</p>

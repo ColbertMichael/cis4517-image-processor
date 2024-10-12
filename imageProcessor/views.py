@@ -84,6 +84,11 @@ def applyFilter(image_id, choice):
     
     #opens downloaded image for processing
     imgToFilter = Image.open(localPath)
+    
+    
+    #ensures photo can be filtered with below filters
+    if(imgToFilter.mode != 'RGB'):
+        imgToFilter = imgToFilter.convert('RGB')
 
 
     #filters image based on users choice
@@ -100,7 +105,7 @@ def applyFilter(image_id, choice):
         sepia = []
         r, g, b = (239, 224, 185)
         for i in range(255):
-            sepia.extend((r*i/255, g*i/255, b*i/255))
+            sepia.extend([int(r*i/255), int(g*i/255), int(b*i/255)])
         imgToFilter = imgToFilter.convert("L")
         imgToFilter.putpalette(sepia)
         imgToFilter = imgToFilter.convert("RGB")
@@ -119,12 +124,12 @@ def applyFilter(image_id, choice):
     )
     
     #updates database with location of filtered image
-    imageObject.filteredImage = '/media/filteredImage/'+shortName
+    imageObject.filteredImage = 'media/filteredImage/'+shortName
 
     #saves database
     imageObject.save()
     
     #deletes image from local server
-    os.remove(localPath)
+    #os.remove(localPath)
 
 
