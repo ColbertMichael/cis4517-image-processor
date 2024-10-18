@@ -12,11 +12,6 @@ import boto3
 import io
 import mimetypes
 
-# Create your views here.
-
-#default home page
-#Todo : create template for image selection and filter selection
-
 
 
 def index(request):
@@ -123,13 +118,13 @@ def applyFilter(image_id, choice):
     shortName = os.path.basename(localPath)
     
     content_type, _ = mimetypes.guess_type(localPath)
-    
     #places filtered image into s3 bucket
     s3.put_object(
         Bucket = bucketName,
         Key = 'media/filteredImage/'+shortName,
         Body = open(localPath, 'rb'),
-        ContentType = content_type
+        ContentType = content_type,
+        ContentDisposition='attachment'
     )
     
     #updates database with location of filtered image
