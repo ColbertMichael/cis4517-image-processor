@@ -113,6 +113,9 @@ def applyFilter(image_id, choice):
         imgToFilter = imgToFilter.convert("RGB")
     elif(choice == 'solar'):
         imgToFilter = ImageOps.solarize(imgToFilter, threshold=80)
+    
+    #ensures image maintains original rotation(mainly from phone images)
+    imgToFilter = ImageOps.exif_transpose(imgToFilter)
 
     #saves filtered image to local path
     imgToFilter.save(localPath)
