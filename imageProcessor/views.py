@@ -31,7 +31,9 @@ def index(request):
     else:
         #defaults to here until user hits submit
         form = UploadFileForm()
-        return render(request, "imageProcessor/upload.html", {"form": form})
+
+    #returns to upload.html if first time, or if form is invalid
+    return render(request, "imageProcessor/upload.html", {"form": form})
 
 def selectFilter(request, image_id):
 
@@ -77,7 +79,7 @@ def applyFilter(image_id, choice):
     s3Key = imageObject.uploadedImage.name
 
     #hardcoded in because file storage is defaulted to s3
-    localPath = '/home/mcolbert/cis4517/PhotoApp/cis4517-image-processor/media/imgToFilter/'+newBaseName
+    localPath = '/home/ubuntu/cis4517-image-processor/media/imgToFilter/'+newBaseName
 
     #downloads image from s3 to edit
     s3.download_file(bucketName, s3Key, localPath)
