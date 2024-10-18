@@ -1,28 +1,40 @@
 <html>
     <head><title>Select the filter</title>
-    
-    
+    <style>       
+             .image-row {
+                display: flex;
+                justify-content: space-between;
+                width: 1024px;
+                margin: 20px;
+
+            }
+            .image{
+                width: 45%;
+                text-align: center;
+            }
+            .image img {
+                width: 100%;  /* Allows scaling based on aspect ratio */
+                height: auto;
+            }
+            .caption {
+                margin-top: 10px;
+                font-size: 16px;
+            }
+    </style>
     </head>
 
     <body>
-
-
-        <p>Your uploaded image:
-        </p>
-            <img src = "{{ image.uploadedImage.url }}"  width = "20%">
-        
+        <div class = "image-row">
+            <div class = "image">
+                <img src = "{{ image.uploadedImage.url }}" alt = "Your image Upload">
+                <div class = "caption">Uploaded Image</div>
+                </div>
+        </div>        
 
         <form method= "POST">
             {% csrf_token %}
             {{ form.as_p}}
-<!--
-            <input type="radio" id="gray" name="filter" value="Gray">Gray
-            <input type="radio" id="solar" name="filter" value="Solar">Solar
-            <input type="radio" id="edge" name="filter" value="Edge">Edge
-            <input type="radio" id="poster" name="filter" value="Poster">Poster
-            <input type="radio" id="sepia" name="filter" value="Sepia">Sepia
-            <input type="radio" id="blur" name="filter" value="Blur">Blur
-        -->
+
             <button type= "Submit">Apply filter</button>
 
         </form>

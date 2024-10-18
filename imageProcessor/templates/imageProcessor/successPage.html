@@ -1,19 +1,46 @@
 <html>
     <head>
         <title>Filter Sucess!</title>
+        <style>
+
+            .image-row {
+                display: flex;
+                justify-content: space-between;
+                width: 1024px;
+                margin: 20px;
+
+            }
+            .image{
+                width: 45%;
+                text-align: center;
+            }
+            .image img {
+                width: 100%;  /* Allows scaling based on aspect ratio */
+                height: auto;
+            }
+            .caption {
+                margin-top: 10px;
+                font-size: 16px;
+            }
+        </style>
     </head>
 
     <body>
-
         <a href = "{% url 'index' %}">Click Here to process another photo!</a>
+        <p>Or </p>
+        <a href = "{{image.filteredImage.url }}" download><button>Download Photo</button></a>
         <br>
-
-        <img src = "{{ image.uploadedImage.url }}" alt = "Your image Upload" width="20%">
-
-        <p>You selected {{choice}} ... congrats!</p>
-        <p>Here is your filtered image</p>
-        <img src = "{{ image.filteredImage.url }}" alt = "Your image Upload" width="20%">
-        <br>
-        <a href = "{{image.filteredImage.url }}" download>Click here to download filterred Image</a>
+        <div class = "image-row">
+            <div class = "image">
+                <img src = "{{ image.uploadedImage.url }}" alt = "Your image Upload">
+                <div class = "caption">Original</div>
+                </div>
+                
+                <div class = "image">
+                <img src = "{{ image.filteredImage.url }}" alt = "Your image Upload">
+                <div class = "caption">Filtered Image: {{choice}}</div>
+                </div>
+            </div>
+        </div>
     </body>
 </html>
