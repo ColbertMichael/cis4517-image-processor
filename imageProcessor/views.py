@@ -10,6 +10,7 @@ from django.conf import settings
 import os
 import boto3
 import io
+import mimetypes
 
 # Create your views here.
 
@@ -120,12 +121,15 @@ def applyFilter(image_id, choice):
     #saves filtered image to local path
     imgToFilter.save(localPath)
     shortName = os.path.basename(localPath)
-
+    
+    content_type, _ = mimetypes.guess_type(localPath)
+    
     #places filtered image into s3 bucket
     s3.put_object(
         Bucket = bucketName,
         Key = 'media/filteredImage/'+shortName,
-        Body = open(localPath, 'rb')
+        Body = open(localPath, 'rb'),
+        ContentType = content_type
     )
     
     #updates database with location of filtered image
@@ -135,6 +139,6 @@ def applyFilter(image_id, choice):
     imageObject.save()
     
     #deletes image from local server
-    #os.remove(localPath)
+    os.remove(localPath)
 
 
